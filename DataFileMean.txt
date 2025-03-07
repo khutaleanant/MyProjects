@@ -1,0 +1,21 @@
+    rank                    Youtuber   subscribers        video views  video count          category  started
+0      1                    T-Series  22,20,00,000  1,98,45,90,90,822      17317.0             Music     2006
+1      2              YouTube Movies  15,40,00,000                  0          0.0  Film & Animation     2015
+2      3  Cocomelon - Nursery Rhymes  14,00,00,000  1,35,48,13,39,848        786.0         Education     2006
+3      4                   SET India  13,90,00,000  1,25,76,42,52,686        756.0             Shows     2006
+4      5                       Music  11,60,00,000                  0          0.0               NaN     2013
+5      6                   PewDiePie  11,10,00,000    28,46,94,58,228       4497.0            Gaming     2010
+6      7                     MrBeast  10,20,00,000    16,83,24,56,681        726.0     Entertainment     2012
+7      8           ✿ Kids Diana Show   9,97,00,000    79,60,22,88,245        756.0    People & Blogs     2015
+8      9                 Like Nastya   9,92,00,000    81,96,38,45,811        702.0    People & Blogs     2016
+9     10                      Gaming   9,27,00,000                  0          0.0               NaN     2013
+10    11                         WWE   9,02,00,000    70,54,47,43,313      63077.0            Sports     2007
+11    12           Zee Music Company   8,67,00,000    49,06,77,11,243       6603.0             Music     2014
+12    13               Vlad and Niki   8,51,00,000    66,49,87,62,660        756.0     Entertainment     2018
+13    14             5-Minute Crafts   7,71,00,000    23,88,14,57,195       5581.0     Howto & Style     2016
+14    15                   BLACKPINK   7,62,00,000    24,70,74,15,704        397.0    People & Blogs     2016
+15    16                      Sports   7,51,00,000                  0          0.0               NaN     2013
+16    17                   Goldmines   7,41,00,000    18,53,30,88,438       3968.0  Film & Animation     2012
+17    18                    Sony SAB   7,06,00,000    82,47,35,81,441        756.0             Shows     2007
+18    19                   BANGTANTV   7,00,00,000    17,47,10,90,750       1787.0             Music     2012
+19    20               Justin Bieber   6,97,00,000    28,56,72,40,999        247.0             Music     2007
