@@ -6,7 +6,7 @@ def connect_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Anant@1080",  # Change as per your MySQL credentials
+        password="Anant@1080", # Change as per your MySQL credentials
         )
 
 def submit_form():
