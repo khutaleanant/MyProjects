@@ -1,12 +1,13 @@
 import tkinter as tk
 from tkinter import messagebox
-import mysql.connector
+import pymysql
 
 def connect_db():
-    return mysql.connector.connect(
+    return pymysql.connect(
         host="localhost",
         user="root",
-        password="Anant@1080", # Change as per your MySQL credentials
+        password="Anant@1080",
+        database="myproject" # Change as per your MySQL credentials
         )
 
 def submit_form():
