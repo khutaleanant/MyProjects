@@ -1,0 +1,3 @@
+['Bin1', 'Bin1', 'Bin1', 'Bin1', 'Bin1', ..., 'Bin4', 'Bin4', 'Bin4', 'Bin4', 'Bin4']
+Length: 20
+Categories (4, object): ['Bin1' < 'Bin2' < 'Bin3' < 'Bin4']
