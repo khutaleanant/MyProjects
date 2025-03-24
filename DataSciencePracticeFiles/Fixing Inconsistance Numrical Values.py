@@ -8,7 +8,7 @@ DataFrame=pd.read_csv("C:\Data Science Programs Practice\Customers Data for Gend
 
 # DataFrame.to_csv("Corrected Dataset for Numbers.csv")
 
-DataFrame["Annual Income ($)"]=DataFrame["Annual Income ($)"].replace({"$":""},regex=True).astype(str)
+DataFrame["Annual Income ($)"]=DataFrame["Annual Income ($)"].replace({",":""},regex=True).astype(str)
 
 DataFrame.to_csv("Corrected Dataset for Numbers_01.csv")
 
