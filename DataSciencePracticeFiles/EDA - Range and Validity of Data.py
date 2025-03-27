@@ -2,6 +2,7 @@
 
 # Example 1
 
+from numpy import maximum
 import pandas as pd
 
 DataFrame=pd.read_csv("C:\Data Science Programs Practice\Salary DataSet.csv")
@@ -25,8 +26,9 @@ DataFrame2=pd.read_csv("C:\Data Science Programs Practice\Mall_Customers.csv")
 # For Age, it should be greater than 20
 
 Minimum_Age=20
+Maximum_Age=60
 
-Age_Outliers=DataFrame2[DataFrame2["Age"]<Minimum_Age]
+Age_Outliers=DataFrame2[(DataFrame2["Age"]<Minimum_Age)|(DataFrame2["Age"]>Maximum_Age)]
 
 # Displaying the Outlier in the Salary column
 
