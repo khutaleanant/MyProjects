@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 DataFrame=pd.read_excel("C:/Data Science Programs Practice/Online Retail.xlsx")
 
-# CHeck the first few rows of the DataFrame to understand the data structure
+# Check the first few rows of the DataFrame to understand the data structure
 print(DataFrame.head())
 # Check the data types of the columns
 print(DataFrame.dtypes)
