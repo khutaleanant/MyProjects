@@ -1,0 +1,30 @@
+import sqlite3 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+connection = sqlite3.connect("C:\Data Science Programs Practice\olist.sqlite")
+
+# Query the data from order_items table
+
+query="select shipping_limit_date from order_items"
+
+DataFrame=pd.read_sql (query, connection)
+
+# Convert the shipping_limit_date to datetime format
+
+DataFrame["shipping_limit_date"]=pd.to_datetime(DataFrame["shipping_limit_date"])
+
+# Resample to hourly counts (Counting the number of records per hour)
+DataFrame_hourly = DataFrame.resample('h', on='shipping_limit_date').size()
+
+# plot the time series with hourly resolution
+
+plt.figure(figsize=(12, 6))
+plt.plot(DataFrame_hourly, marker='x', color='blue')
+plt.title("Shipping Limit Date Over Time")
+plt.xlabel("Date and Time")
+plt.ylabel("Number of Shipments")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
+
