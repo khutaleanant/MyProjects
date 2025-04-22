@@ -21,8 +21,8 @@ else:
 
     #Calculate the probabilities
     P_failed=DataFrame["Failed"].mean()
-    P_low_score=DatFrame["Low_Score"].mean()
-    P_low_given_failed=DataFrame[DataFrame[DataFrame["Failed"]==1]["Low_Score"]].mean()
+    P_low_score=DataFrame["Low_Score"].mean()
+    P_low_given_failed=DataFrame[DataFrame["Failed"]==1]["Low_Score"].mean()
 
     # Avoid divide by 0
     if P_low_score>0:
