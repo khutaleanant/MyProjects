@@ -1,3 +1,12 @@
+# Word Cloud Case Study
+# Word Clouds are a popular way to visualize text data, allowing you to see the most frequently used words in a dataset at a glance."""
+## Advantages of Word Clouds :
+#Analyzing customer and employee feedback.
+#Identifying new SEO keywords to target.
+## Drawbacks of Word Clouds :
+#Word Clouds are not perfect for every situation.
+#Data should be optimized for context.
+
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
