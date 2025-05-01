@@ -1,0 +1,1 @@
+# How sentiment polarity is calculated
