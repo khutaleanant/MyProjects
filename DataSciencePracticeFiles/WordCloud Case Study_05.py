@@ -50,7 +50,7 @@ Technology is not just a tool — it is a force shaping the future of humanity. 
 stopwords = set(STOPWORDS)
 
 # Generate the word cloud
-wordcloud = WordCloud(width=800, height=400, background_color='white', stopwords=stopwords).generate(text)
+wordcloud = WordCloud(width=800, height=400, background_color='red', stopwords=stopwords).generate(text)
 
 # Plotting the word cloud
 plt.figure(figsize=(12, 6))
