@@ -5,7 +5,7 @@
 from numpy import maximum
 import pandas as pd
 
-DataFrame=pd.read_csv("C:\Data Science Programs Practice\Salary DataSet.csv")
+DataFrame=pd.read_csv("C:\\Data Science Programs Practice\\Salary DataSet.csv")
 
 # For salary, it should be greater than 50000
 
@@ -21,7 +21,7 @@ print(Salary_Outliers)
 
 # Example 2
 
-DataFrame2=pd.read_csv("C:\Data Science Programs Practice\Mall_Customers.csv")
+DataFrame2=pd.read_csv("C:\\Data Science Programs Practice\\Mall_Customers.csv")
 
 # For Age, it should be greater than 20
 
