@@ -15,6 +15,15 @@ X=data.data
 y=data.target
 target_names=data.target_names
 
+
+# Print sample data
+print("Feature names:", data.feature_names)
+print("Target names:", target_names)
+print("\nFirst 5 rows of feature data (X):\n", X[:5])
+print("First 5 target values (y):", y[:5])
+
+
+
 # Standardize the Features
 scaler=StandardScaler()
 X_scaled=scaler.fit_transform(X)
