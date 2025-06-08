@@ -16,5 +16,5 @@
             "askForPassword": true
         }
     ],
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "standard"
 }
