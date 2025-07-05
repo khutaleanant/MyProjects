@@ -1,4 +1,7 @@
-#
+# Bayesian Linear Regression on Yacht Hydrodynamics Dataset
+# Bayesian Linear Regression is a supervised learning algorithm that applies the principles of Bayesian inference to the linear regression model. 
+# Unlike traditional linear regression, which gives point estimates for model parameters (coefficients),
+# Bayesian linear regression provides probability distributions over those parameters.
 
 import pandas as pd
 import numpy as np
