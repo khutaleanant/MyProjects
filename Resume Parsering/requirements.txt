@@ -1,0 +1,7 @@
+pandas
+python-docx
+PyMuPDF
+spacy
+phonenumbers
+email_validator
+openpyxl
