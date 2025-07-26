@@ -1,45 +1,46 @@
 import os
 import re
-import docx                            # For .docx parsing
-import fitz                            # For PDF parsing using PyMuPDF
+import docx                         # For DOCX file reading
+import fitz                         # For PDF file reading (PyMuPDF)
 import pandas as pd
-import spacy                           # For Named Entity Recognition
-import phonenumbers                    # For phone number parsing
+import spacy                        # For NER
+import phonenumbers                 # For phone number detection
 from email_validator import validate_email, EmailNotValidError
 from datetime import datetime
 
-# Load the English NLP model from spaCy
+# Load SpaCy language model
 nlp = spacy.load("en_core_web_sm")
 
-# ----------- TEXT EXTRACTION FUNCTIONS -----------
+# ------------------- FILE READERS -------------------
 
 def extract_text_from_pdf(file_path):
-    """Extracts text from PDF files using PyMuPDF"""
+    """Extracts raw text from PDF using PyMuPDF"""
     text = ""
     try:
         with fitz.open(file_path) as doc:
             for page in doc:
                 text += page.get_text()
-    except:
-        print(f"⚠️ Failed to read PDF: {file_path}")
+    except Exception as e:
+        print(f"⚠️ Could not read PDF: {file_path} ({e})")
+        print(f"⚠️ Could not read PDF: {file_path}")
     return text
 
 def extract_text_from_docx(file_path):
-    """Extracts text from DOCX files using python-docx"""
+    """Extracts raw text from DOCX using python-docx"""
     try:
         doc = docx.Document(file_path)
         return "\n".join([para.text for para in doc.paragraphs])
     except:
-        print(f"⚠️ Failed to read DOCX: {file_path}")
+        print(f"⚠️ Could not read DOCX: {file_path}")
         return ""
 
-# ----------- CONTACT & PROFILE EXTRACTION -----------
+# ------------------- BASIC EXTRACTION -------------------
 
 def extract_contact_details(text):
-    """Extracts validated email and phone number"""
+    """Finds email and phone number"""
     contact = {}
 
-    # Extract email
+    # Email
     emails = re.findall(r"[\w\.-]+@[\w\.-]+", text)
     for email in emails:
         try:
@@ -49,16 +50,17 @@ def extract_contact_details(text):
         except EmailNotValidError:
             continue
 
-    # Extract phone number(s)
+    # Phone number
     phones = []
     for match in phonenumbers.PhoneNumberMatcher(text, "IN"):
         num = phonenumbers.format_number(match.number, phonenumbers.PhoneNumberFormat.E164)
         phones.append(num)
     contact["Phone"] = phones[0] if phones else ""
+
     return contact
 
 def extract_links(text):
-    """Detects LinkedIn and GitHub URLs (with or without https)"""
+    """Finds LinkedIn and GitHub profile URLs"""
     linkedin = re.search(r"(https?://)?(www\.)?linkedin\.com/in/[A-Za-z0-9_-]+", text)
     github = re.search(r"(https?://)?(www\.)?github\.com/[A-Za-z0-9_-]+", text)
 
@@ -75,10 +77,8 @@ def extract_links(text):
         "GitHub": github_url
     }
 
-# ----------- SKILL & EDUCATION EXTRACTION -----------
-
 def extract_skills(text):
-    """Extracts skills based on a predefined keyword list"""
+    """Detects key technical skills from text"""
     keywords = [
         'Python', 'Excel', 'SQL', 'Java', 'Power BI', 'Tableau', 'Pandas',
         'Machine Learning', 'Deep Learning', 'NLP', 'Flask', 'Django',
@@ -88,16 +88,16 @@ def extract_skills(text):
     return ', '.join(set(found_skills))
 
 def extract_education(text):
-    """Extracts degree names and universities"""
+    """Extracts degrees and university names"""
     degrees = re.findall(r"(Bachelor|Master|MBA|M\.?Com|B\.?Tech|M\.?Tech|DBM|Diploma)[^\n,]{0,60}", text, re.I)
     universities = re.findall(r"\b\w+ University\b", text, re.I)
     combined = list(set([deg[0] if isinstance(deg, tuple) else deg for deg in degrees] + universities))
     return ', '.join(combined)
 
-# ----------- EXPERIENCE + METADATA EXTRACTION -----------
+# ------------------- ENTITY RECOGNITION -------------------
 
 def extract_entities(text):
-    """Uses spaCy NER to extract Name, Organization and Dates"""
+    """Uses spaCy to detect Name, Organizations, and Dates"""
     doc = nlp(text)
     name = ""
     orgs = set()
@@ -109,7 +109,7 @@ def extract_entities(text):
         elif ent.label_ == "ORG":
             orgs.add(ent.text.strip())
         elif ent.label_ == "DATE":
-            if re.search(r"\d{4}", ent.text):  # Only if year is present
+            if re.search(r"\d{4}", ent.text):
                 dates.append(ent.text.strip())
 
     return {
@@ -119,7 +119,7 @@ def extract_entities(text):
     }
 
 def extract_experience_section(text):
-    """Optional: Extract the experience block using section headers"""
+    """Optional: Gets the experience section block (if exists)"""
     sections = re.findall(
         r"(?i)(?:Experience|Work History)[\s:\n]*(.*?)(?=\n[A-Z][a-z]+:|\Z)",
         text,
@@ -130,10 +130,10 @@ def extract_experience_section(text):
         return exp_text
     return ""
 
-# ----------- EXPERIENCE DATE LOGIC -----------
+# ------------------- EXPERIENCE CALCULATOR -------------------
 
 def parse_to_date(date_str):
-    """Converts a string to a datetime object (flexible format)"""
+    """Attempts to convert a text date into a datetime"""
     try:
         return datetime.strptime(date_str.strip(), "%B %Y")
     except:
@@ -143,7 +143,7 @@ def parse_to_date(date_str):
             return None
 
 def calculate_experience_metrics(dates_list):
-    """Calculates total experience and job gap (if any gap > 1 year)"""
+    """Calculates total experience and gaps from extracted date ranges"""
     date_objs = list(filter(None, [parse_to_date(d) for d in dates_list]))
     date_objs.sort()
 
@@ -160,23 +160,20 @@ def calculate_experience_metrics(dates_list):
 
     return round(total_exp, 2), round(total_gap, 2)
 
-# ----------- RESUME PARSING FUNCTION -----------
+# ------------------- PARSE SINGLE RESUME -------------------
 
 def parse_resume_text(text, filename):
-    """Extracts and structures all key fields from the resume"""
+    """Master function to extract all information from resume"""
     contact = extract_contact_details(text)
     links = extract_links(text)
     entities = extract_entities(text)
 
-    # Use file name if name not detected
     name = entities["Name"]
     if not name or name.lower() == "email":
         name = filename.split("_Resume")[0].replace("_", " ")
 
-    # Calculate experience metrics
     total_exp, job_gap = calculate_experience_metrics(entities["Dates"])
 
-    # Compile parsed resume info
     parsed = {
         "Name": name.strip(),
         "Email": contact.get("Email", ""),
@@ -191,10 +188,10 @@ def parse_resume_text(text, filename):
     }
     return parsed
 
-# ----------- MAIN BULK PROCESS FUNCTION -----------
+# ------------------- MAIN FUNCTION -------------------
 
 def process_resumes(input_folder, output_file):
-    """Loops through all resumes in the folder and writes output Excel"""
+    """Processes all resumes in the folder and saves Excel output"""
     if not os.path.exists(input_folder):
         os.makedirs(input_folder)
         print(f"📁 Created folder '{input_folder}'. Add resumes and re-run.")
@@ -221,7 +218,16 @@ def process_resumes(input_folder, output_file):
     df.to_excel(output_file, index=False)
     print(f"✅ Output written to: {output_file}")
 
-# ----------- ENTRY POINT -----------
+# ------------------- EXECUTION ENTRY -------------------
 
 if __name__ == "__main__":
-    process_resumes("resumes", "output/parsed_resume_data.xlsx")
+    # ✅ Base directory: Use your provided path
+    base_dir = r"G:\ABC TRAINING\Payton_ABC Training\Notes\Practical\MyProjects\Resume Parsering"
+
+    input_folder = os.path.join(base_dir, "resumes")
+    output_dir = os.path.join(base_dir, "output")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    output_file = os.path.join(output_dir, "parsed_resume_data.xlsx")
+    process_resumes(input_folder, output_file)
